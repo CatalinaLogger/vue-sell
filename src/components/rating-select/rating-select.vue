@@ -35,7 +35,7 @@
             <h1 class="name">{{rating.username}}</h1>
             <div class="star-wrapper">
               <star :size="24" :score="rating.score"></star>
-              <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}</span>
+              <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}分钟送达</span>
             </div>
             <p class="text">{{rating.text}}</p>
             <div class="recommend" v-show="rating.recommend && rating.recommend.length">
@@ -238,6 +238,9 @@ export default {
           .name
             margin-bottom 6px
             font-size 10px
+          .star-wrapper
+            margin-bottom 4px
+            font-size 0
             .star
               display inline-block
               vertical-align top
@@ -245,7 +248,7 @@ export default {
             .delivery
               display inline-block
               vertical-align top
-              line-height 12px
+              line-height 14px
               font-size 10px
               color rgb(147, 153, 159)
           .text
