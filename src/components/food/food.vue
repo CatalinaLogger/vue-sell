@@ -1,6 +1,6 @@
 <template>
   <transition name="move">
-    <div class="food" v-show="showFlag" ref="food">
+    <div class="food" v-show="showFlag" @touchstart.prevent="foodTouchStart" @touchmove.prevent="foodTouchMove" @touchend="foodTouchEnd" ref="food">
       <div class="food-content">
         <div class="image-header">
           <img :src="food.image">
@@ -46,8 +46,15 @@ import BScroll from 'better-scroll'
 import CartControl from 'components/cart-control/cart-control'
 import Split from 'components/split/split'
 import RatingSelect from 'components/rating-select/rating-select'
+import {prefixStyle} from 'common/js/util'
+
+const transform = prefixStyle('transform')
+const transitionDuration = prefixStyle('transitionDuration')
 
 export default {
+  created() {
+    this.touch = {}
+  },
   props: {
     food: {
       type: Object,
@@ -73,6 +80,50 @@ export default {
     },
     foodAdd(target) {
       this.$emit('addClick', target)
+    },
+    foodTouchStart(e) {
+      this.touch.initiated = true
+      this.touch.moved = false
+      const touch = e.touches[0]
+      this.touch.startX = touch.pageX
+      this.touch.startY = touch.pageY
+    },
+    foodTouchMove(e) {
+      if (!this.touch.initiated) {
+        return
+      }
+      const touch = e.touches[0]
+      const deltaX = touch.pageX - this.touch.startX
+      const deltaY = touch.pageY - this.touch.startY
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        return
+      }
+      if (!this.touch.moved) {
+        this.touch.moved = true
+      }
+      const offsetWidth = Math.max(0, deltaX)
+      this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
+      this.$refs.food.style[transform] = `translate3d(${offsetWidth}px,0,0)`
+      this.$refs.food.style[transitionDuration] = 0
+    },
+    foodTouchEnd() {
+      if (!this.touch.moved) {
+        return
+      }
+      let offsetWidth
+      if (this.touch.percent > 0.2) {
+        this.showFlag = false
+        offsetWidth = window.innerWidth
+        setTimeout(() => {
+          this.$refs.food.style['transform'] = ''
+          this.$refs.food.style['transitionDuration'] = ''
+        }, 300)
+      } else {
+        offsetWidth = 0
+      }
+      const time = 300
+      this.$refs.food.style['transform'] = `translate3d(${offsetWidth}px,0,0)`
+      this.$refs.food.style['transitionDuration'] = `${time}ms`
     },
     show() {
       this.showFlag = true

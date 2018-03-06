@@ -46,6 +46,8 @@ export default {
           bg-image('discount_1')
         &.guarantee
           bg-image('guarantee_1')
+        &.invoice
+          bg-image('invoice_1')
         &.special
           bg-image('special_1')
     &.sign-2
@@ -59,6 +61,8 @@ export default {
           bg-image('discount_2')
         &.guarantee
           bg-image('guarantee_2')
+        &.invoice
+          bg-image('invoice_2')
         &.special
           bg-image('special_2')
     &.sign-3
@@ -72,6 +76,8 @@ export default {
           bg-image('discount_3')
         &.guarantee
           bg-image('guarantee_3')
+        &.invoice
+          bg-image('invoice_3')
         &.special
           bg-image('special_3')
     &.sign-4
@@ -85,6 +91,8 @@ export default {
           bg-image('discount_4')
         &.guarantee
           bg-image('guarantee_4')
+        &.invoice
+          bg-image('invoice_4')
         &.special
           bg-image('special_4')
 </style>

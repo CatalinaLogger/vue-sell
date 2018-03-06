@@ -17,13 +17,20 @@ import Header from 'components/header/header'
 import {getSeller} from 'api/index'
 import {ERR_OK} from 'api/config'
 
+import {urlParse} from 'common/js/util'
+
 export default {
   created() {
     this._getSeller()
   },
   data() {
     return {
-      seller: {}
+      seller: {
+        id: (() => {
+          let queryParam = urlParse()
+          return queryParam.id
+        })()
+      }
     }
   },
   methods: {
